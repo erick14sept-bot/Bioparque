@@ -6,8 +6,14 @@ import java.util.Scanner;
  *
  * @author Usuario
  */
+
 public class Bioparque {
- 
+/**
+ * Al intentar instanciar directamente Animal, 
+ * Java genera un error de compilación porque una clase abstracta no puede ser instanciada. 
+ * Los objetos deben crearse mediante una categoría concreta como Mamifero, Ave o Reptil.
+ *  
+ */
     public static void main(String[] args) {
         Scanner lector = new Scanner(System.in);
         GestionarAnimal inventario = new GestionarAnimal (lector);
@@ -21,6 +27,7 @@ public class Bioparque {
             System.out.println("3. Buscar animal");
             System.out.println("4. Actualizar animal");
             System.out.println("5. Eliminar animal");
+            System.out.println("6. Filtrar animales por categoria o estado");
             System.out.println("0. Salir");
             System.out.println("============================");
             System.out.print("Seleccione una opcion: ");
@@ -53,6 +60,10 @@ public class Bioparque {
  
                 case 5:
                     inventario.eliminarDesdeConsola();
+                    break;
+ 
+                case 6:
+                    inventario.filtrarDesdeConsola();
                     break;
  
                 case 0:

@@ -4,7 +4,7 @@ package com.mycompany.bioparque;
  *
  * @author Usuario
  */
-public class Mamifero extends Animal {
+public class Mamifero extends Animal implements Alimentable {
     private String tipoPelaje;
  
     public Mamifero(String codigo, String nombre, int edad, double peso, String sexo,
@@ -35,5 +35,28 @@ public class Mamifero extends Animal {
     public void mostrarInfoMamifero() {
         mostrarInformacion();
         System.out.println("Tipo de pelaje: " + tipoPelaje);
+    }
+
+    @Override
+    public String emitirSonido() {
+        return "Emite un sonido gutural propio de su especie (rugido, gruñido o bramido segun el caso).";
+    }
+
+    @Override
+    public String obtenerTipoAlimentacion() {
+        return "Se alimenta segun su especie, complementando su dieta con cuidado de su pelaje tipo "
+                + tipoPelaje + ".";
+    }
+
+    @Override
+    public String describirCuidados() {
+        return "Requiere cepillado o mantenimiento de su pelaje tipo " + tipoPelaje
+                + " y control veterinario periodico.";
+    }
+
+    @Override
+    public double calcularRacionDiaria() {
+        // Aproximacion: un mamifero consume alrededor del 3% de su peso corporal al dia.
+        return getPeso() * 0.03;
     }
 }

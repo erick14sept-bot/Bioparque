@@ -16,9 +16,7 @@ public abstract class Animal {
     private EstadoInventario estadoInventario; 
     private String habitat;            
  
-    public Animal(String codigo, String nombre, int edad, double peso,
-                  String sexo, EstadoSalud estadoSalud,
-                  EstadoInventario estadoInventario, String habitat) {
+    public Animal(String codigo, String nombre, int edad, double peso, String sexo, EstadoSalud estadoSalud, EstadoInventario estadoInventario, String habitat) {
  
 
         if (codigo == null || codigo.isBlank()) {
@@ -140,4 +138,10 @@ public abstract class Animal {
         System.out.println("Estado de inventario: " + estadoInventario);
         System.out.println("Habitat: " + habitat);
     }
+
+    public abstract String emitirSonido();
+
+    public abstract String obtenerTipoAlimentacion();
+
+    public abstract String describirCuidados();
 }

@@ -4,7 +4,7 @@ package com.mycompany.bioparque;
  *
  * @author Usuario
  */
-public class Reptil extends Animal {
+public class Reptil extends Animal implements Alimentable {
  
     private String tipoEscamas;
  
@@ -37,5 +37,27 @@ public class Reptil extends Animal {
     public void mostrarInfoReptil() {
         mostrarInformacion();
         System.out.println("Tipo de escamas: " + tipoEscamas);
+    }
+
+    @Override
+    public String emitirSonido() {
+        return "Emite siseos o sonidos guturales; la mayoria de reptiles no vocaliza con fuerza.";
+    }
+
+    @Override
+    public String obtenerTipoAlimentacion() {
+        return "Se alimenta de forma esporadica debido a su metabolismo ectotermico "
+                + "(depende de la temperatura del ambiente).";
+    }
+
+    @Override
+    public String describirCuidados() {
+        return "Requiere control de temperatura y humedad del habitat, ademas de revision "
+                + "periodica de sus escamas tipo " + tipoEscamas + ".";
+    }
+
+    @Override
+    public double calcularRacionDiaria() {
+        return getPeso() * 0.02;
     }
 }

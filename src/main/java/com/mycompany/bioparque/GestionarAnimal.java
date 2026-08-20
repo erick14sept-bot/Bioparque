@@ -88,17 +88,33 @@ public class GestionarAnimal {
     private void mostrarAnimal(Animal animal) {
         System.out.println("Categoria: " + categoriaDe(animal));
  
+        // Nota: se mantiene el despacho explicito por instanceof/downcast
+        // (igual que en fases anteriores). Todavia no se recorre la
+        // coleccion llamando a los metodos abstractos directamente sobre
+        // una referencia de tipo Animal; eso corresponde a la Fase 4.
         if (animal instanceof Mamifero) {
             Mamifero mamifero = (Mamifero) animal;
             mamifero.mostrarInfoMamifero();
+            System.out.println("Sonido: " + mamifero.emitirSonido());
+            System.out.println("Alimentacion: " + mamifero.obtenerTipoAlimentacion());
+            System.out.println("Cuidados: " + mamifero.describirCuidados());
+            System.out.println("Racion diaria estimada: " + mamifero.calcularRacionDiaria() + " kg");
  
         } else if (animal instanceof Ave) {
             Ave ave = (Ave) animal;
             ave.mostrarInfoAve();
+            System.out.println("Sonido: " + ave.emitirSonido());
+            System.out.println("Alimentacion: " + ave.obtenerTipoAlimentacion());
+            System.out.println("Cuidados: " + ave.describirCuidados());
+            System.out.println("Racion diaria estimada: " + ave.calcularRacionDiaria() + " kg");
  
         } else if (animal instanceof Reptil) {
             Reptil reptil = (Reptil) animal;
             reptil.mostrarInfoReptil();
+            System.out.println("Sonido: " + reptil.emitirSonido());
+            System.out.println("Alimentacion: " + reptil.obtenerTipoAlimentacion());
+            System.out.println("Cuidados: " + reptil.describirCuidados());
+            System.out.println("Racion diaria estimada: " + reptil.calcularRacionDiaria() + " kg");
  
         } else {
             animal.mostrarInformacion();
@@ -287,6 +303,83 @@ public class GestionarAnimal {
         }
     }
 
+    // ===================== FILTRO DEL INVENTARIO =====================
+    // Los metodos de filtro devuelven una coleccion NUEVA y no modifican
+    // en ningun momento la lista original "animales" (RF-06).
+ 
+    public ArrayList<Animal> filtrarPorCategoria(String categoria) {
+        if (categoria == null || categoria.isBlank()) {
+            throw new IllegalArgumentException("La categoria no puede estar vacia.");
+        }
+        ArrayList<Animal> resultado = new ArrayList<>();
+        for (Animal animal : animales) {
+            if (categoriaDe(animal).equalsIgnoreCase(categoria.trim())) {
+                resultado.add(animal);
+            }
+        }
+        return resultado;
+    }
+ 
+    public ArrayList<Animal> filtrarPorEstado(EstadoInventario estado) {
+        if (estado == null) {
+            throw new IllegalArgumentException("El estado no puede ser nulo.");
+        }
+        ArrayList<Animal> resultado = new ArrayList<>();
+        for (Animal animal : animales) {
+            if (animal.getEstadoInventario() == estado) {
+                resultado.add(animal);
+            }
+        }
+        return resultado;
+    }
+ 
+    public void filtrarDesdeConsola() {
+        System.out.println("\n===== FILTRAR INVENTARIO =====");
+        System.out.println("1. Filtrar por categoria (Mamifero, Ave, Reptil)");
+        System.out.println("2. Filtrar por estado de inventario (DISPONIBLE, NO_DISPONIBLE, EN_CUARENTENA)");
+        System.out.print("Seleccione una opcion: ");
+ 
+        try {
+            int opcion = Integer.parseInt(lector.nextLine());
+            ArrayList<Animal> resultado;
+ 
+            switch (opcion) {
+                case 1:
+                    System.out.print("Ingrese la categoria: ");
+                    String categoria = lector.nextLine();
+                    resultado = filtrarPorCategoria(categoria);
+                    break;
+ 
+                case 2:
+                    System.out.print("Ingrese el estado: ");
+                    String estadoTexto = lector.nextLine();
+                    EstadoInventario estado = EstadoInventario.valueOf(estadoTexto.trim().toUpperCase());
+                    resultado = filtrarPorEstado(estado);
+                    break;
+ 
+                default:
+                    System.out.println("Opcion fuera de rango.");
+                    return;
+            }
+ 
+            if (resultado.isEmpty()) {
+                System.out.println("No se encontraron animales con ese criterio.");
+                return;
+            }
+ 
+            System.out.println("\n===== RESULTADOS DEL FILTRO (" + resultado.size() + ") =====");
+            for (Animal animal : resultado) {
+                mostrarAnimal(animal);
+                System.out.println("------------------------");
+            }
+ 
+        } catch (NumberFormatException e) {
+            System.out.println("Error: ingrese un valor numerico valido.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error al filtrar: " + e.getMessage());
+        }
+    }
+ 
     public void eliminarDesdeConsola() {
         System.out.print("Ingrese el codigo del animal a eliminar: ");
         String codigo = lector.nextLine();
